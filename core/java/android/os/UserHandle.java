@@ -110,6 +110,9 @@ public final class UserHandle implements Parcelable {
      * @hide
      */
     public static final int getUserId(int uid) {
+        // nemo
+        if(uid == 100000)
+            return 0;
         if (MU_ENABLED) {
             return uid / PER_USER_RANGE;
         } else {
