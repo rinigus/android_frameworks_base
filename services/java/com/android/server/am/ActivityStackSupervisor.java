@@ -70,6 +70,8 @@ import android.util.EventLog;
 import android.util.Slog;
 import android.util.SparseIntArray;
 
+import sfdroid.Helpers;
+
 import com.android.internal.app.HeavyWeightSwitcherActivity;
 import com.android.internal.os.TransferPipe;
 import com.android.server.am.ActivityManagerService.PendingActivityLaunch;
@@ -1109,6 +1111,11 @@ public final class ActivityStackSupervisor {
             int callingPid, int callingUid, String callingPackage, int startFlags, Bundle options,
             boolean componentSpecified, ActivityRecord[] outActivity) {
         int err = ActivityManager.START_SUCCESS;
+
+        // sfdroid
+        if(aInfo != null) {
+            Helpers.notify_of_app_start(intent.getComponent().flattenToShortString());
+        }
 
         ProcessRecord callerApp = null;
         if (caller != null) {
