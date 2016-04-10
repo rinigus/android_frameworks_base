@@ -104,10 +104,12 @@ public class NavbarEditor implements View.OnTouchListener {
             R.string.navbar_empty_button, R.string.accessibility_clear_all,
             0, R.drawable.ic_sysbar_add,
             R.drawable.ic_sysbar_add_land, R.drawable.ic_sysbar_add_side);
+/*
     public static final ButtonInfo NAVBAR_HOME = new ButtonInfo("home",
             R.string.navbar_home_button, R.string.accessibility_home,
             KeyEvent.KEYCODE_HOME, R.drawable.ic_sysbar_home,
             R.drawable.ic_sysbar_home_land, R.drawable.ic_sysbar_home);
+*/
     public static final ButtonInfo NAVBAR_BACK = new ButtonInfo("back",
             R.string.navbar_back_button, R.string.accessibility_back,
             KeyEvent.KEYCODE_BACK, R.drawable.ic_sysbar_back,
@@ -116,10 +118,11 @@ public class NavbarEditor implements View.OnTouchListener {
             R.string.navbar_search_button, R.string.accessibility_back,
             KeyEvent.KEYCODE_SEARCH, R.drawable.ic_sysbar_search,
             R.drawable.ic_sysbar_search_land, R.drawable.ic_sysbar_search_side);
+/*
     public static final ButtonInfo NAVBAR_RECENT = new ButtonInfo("recent",
             R.string.navbar_recent_button, R.string.accessibility_recent,
             0, R.drawable.ic_sysbar_recent,
-            R.drawable.ic_sysbar_recent_land, R.drawable.ic_sysbar_recent_side);
+            R.drawable.ic_sysbar_recent_land, R.drawable.ic_sysbar_recent_side);*/
     public static final ButtonInfo NAVBAR_CONDITIONAL_MENU = new ButtonInfo("menu0",
             R.string.navbar_menu_conditional_button, R.string.accessibility_menu,
             KeyEvent.KEYCODE_MENU, R.drawable.ic_sysbar_menu,
@@ -142,11 +145,11 @@ public class NavbarEditor implements View.OnTouchListener {
             0, R.drawable.ic_sysbar_ime_right);
 
     private static final ButtonInfo[] ALL_BUTTONS = new ButtonInfo[] {
-        NAVBAR_EMPTY, NAVBAR_HOME, NAVBAR_BACK, NAVBAR_SEARCH,
-        NAVBAR_RECENT, NAVBAR_CONDITIONAL_MENU, NAVBAR_ALWAYS_MENU, NAVBAR_MENU_BIG
+        NAVBAR_EMPTY, /*NAVBAR_HOME,*/ NAVBAR_BACK, NAVBAR_SEARCH,
+        /*NAVBAR_RECENT,*/ NAVBAR_CONDITIONAL_MENU, NAVBAR_ALWAYS_MENU, NAVBAR_MENU_BIG
     };
 
-    private static final String DEFAULT_SETTING_STRING = "empty|back|home|recent|empty|menu0";
+    private static final String DEFAULT_SETTING_STRING = "empty|back|empty|menu0";//"empty|back|home|recent|empty|menu0";
 
     public NavbarEditor (View parent, boolean orientation) {
         mContext = parent.getContext();
@@ -272,7 +275,7 @@ public class NavbarEditor implements View.OnTouchListener {
             view.setPressed(false);
             view.removeCallbacks(mCheckLongPress);
 
-            if (!mLongPressed && !view.getTag().equals(NAVBAR_HOME)) {
+            if (!mLongPressed /*&& !view.getTag().equals(NAVBAR_HOME)*/) {
                 final boolean isSmallButton = ArrayUtils.contains(SMALL_BUTTON_IDS, view.getId());
                 final ButtonAdapter list = new ButtonAdapter(mContext, mButtonViews, isSmallButton);
 
@@ -517,7 +520,7 @@ public class NavbarEditor implements View.OnTouchListener {
             List<ButtonInfo> items = new ArrayList<ButtonInfo>(Arrays.asList(ALL_BUTTONS));
 
             // home button is not assignable
-            items.remove(NAVBAR_HOME);
+            //items.remove(NAVBAR_HOME);
             // menu buttons can only be assigned to side buttons
             if (!smallButtons) {
                 items.remove(NAVBAR_CONDITIONAL_MENU);

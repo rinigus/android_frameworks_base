@@ -148,12 +148,12 @@ public class NavigationBarView extends LinearLayout {
                 View view, int transitionType) {
             if (view == findButton(NavbarEditor.NAVBAR_BACK)) {
                 mBackTransitioning = true;
-            } else if (view ==  findButton(NavbarEditor.NAVBAR_HOME)
-                    && transitionType == LayoutTransition.APPEARING) {
-                mHomeAppearing = true;
-                mStartDelay = transition.getStartDelay(transitionType);
-                mDuration = transition.getDuration(transitionType);
-                mInterpolator = transition.getInterpolator(transitionType);
+//            } else if (view ==  findButton(NavbarEditor.NAVBAR_HOME)
+//                    && transitionType == LayoutTransition.APPEARING) {
+//                mHomeAppearing = true;
+//                mStartDelay = transition.getStartDelay(transitionType);
+//                mDuration = transition.getDuration(transitionType);
+//                mInterpolator = transition.getInterpolator(transitionType);
             }
         }
 
@@ -162,9 +162,9 @@ public class NavigationBarView extends LinearLayout {
                 View view, int transitionType) {
             if (view == findButton(NavbarEditor.NAVBAR_BACK)) {
                 mBackTransitioning = false;
-            } else if (view ==  findButton(NavbarEditor.NAVBAR_HOME)
-                    && transitionType == LayoutTransition.APPEARING) {
-                mHomeAppearing = false;
+//            } else if (view ==  findButton(NavbarEditor.NAVBAR_HOME)
+//                    && transitionType == LayoutTransition.APPEARING) {
+//                mHomeAppearing = false;
             }
         }
 
@@ -172,9 +172,9 @@ public class NavigationBarView extends LinearLayout {
             // When dismissing ime during unlock, force the back button to run the same appearance
             // animation as home (if we catch this condition early enough).
             View backView = findButton(NavbarEditor.NAVBAR_BACK);
-            View homeView = findButton(NavbarEditor.NAVBAR_HOME);
+//            View homeView = findButton(NavbarEditor.NAVBAR_HOME);
             if (!mBackTransitioning && backView != null && backView.getVisibility() == VISIBLE
-                    && mHomeAppearing && homeView != null && homeView.getAlpha() == 0) {
+                    /*&& mHomeAppearing && homeView != null && homeView.getAlpha() == 0*/) {
                 backView.setAlpha(0);
                 ValueAnimator a = ObjectAnimator.ofFloat(backView, "alpha", 0, 1);
                 a.setStartDelay(mStartDelay);
@@ -356,16 +356,16 @@ public class NavigationBarView extends LinearLayout {
     }
 
     protected void updateButtonListeners() {
-        View recentView = findButton(NavbarEditor.NAVBAR_RECENT);
-        if (recentView != null) {
-            recentView.setOnClickListener(mRecentsClickListener);
-            recentView.setOnTouchListener(mRecentsPreloadListener);
-            recentView.setOnLongClickListener(mRecentsLongClickListener);
-        }
-        View homeView = findButton(NavbarEditor.NAVBAR_HOME);
-        if (homeView != null) {
-            homeView.setOnTouchListener(mHomeSearchActionListener);
-        }
+//        View recentView = findButton(NavbarEditor.NAVBAR_RECENT);
+//        if (recentView != null) {
+//            recentView.setOnClickListener(mRecentsClickListener);
+//            recentView.setOnTouchListener(mRecentsPreloadListener);
+//            recentView.setOnLongClickListener(mRecentsLongClickListener);
+//        }
+//        View homeView = findButton(NavbarEditor.NAVBAR_HOME);
+//        if (homeView != null) {
+//            homeView.setOnTouchListener(mHomeSearchActionListener);
+//        }
     }
 
     private void setButtonVisibility(NavbarEditor.ButtonInfo info, boolean visible) {
@@ -517,8 +517,8 @@ public class NavigationBarView extends LinearLayout {
         mNavigationIconHints = hints;
 
         ImageView backView = (ImageView) findButton(NavbarEditor.NAVBAR_BACK);
-        ImageView recentView = (ImageView) findButton(NavbarEditor.NAVBAR_RECENT);
-        ImageView homeView = (ImageView) findButton(NavbarEditor.NAVBAR_HOME);
+//        ImageView recentView = (ImageView) findButton(NavbarEditor.NAVBAR_RECENT);
+//        ImageView homeView = (ImageView) findButton(NavbarEditor.NAVBAR_HOME);
 
         if (backView != null) {
             backView.setImageDrawable(backAlt
@@ -526,13 +526,13 @@ public class NavigationBarView extends LinearLayout {
                     : (mVertical ? mBackLandIcon : mBackIcon));
         }
 
-        if (recentView != null) {
-            recentView.setImageDrawable(mVertical ? mRecentLandIcon : mRecentIcon);
-        }
+//        if (recentView != null) {
+//            recentView.setImageDrawable(mVertical ? mRecentLandIcon : mRecentIcon);
+//        }
 
-        if (homeView != null) {
-            homeView.setImageDrawable(mVertical ? mHomeLandIcon : mHomeIcon);
-        }
+//        if (homeView != null) {
+//            homeView.setImageDrawable(mVertical ? mHomeLandIcon : mHomeIcon);
+//        }
 
         setDisabledFlags(mDisabledFlags, true);
 
@@ -600,9 +600,9 @@ public class NavigationBarView extends LinearLayout {
         }
 
         setButtonVisibility(NavbarEditor.NAVBAR_BACK, !disableBack);
-        setButtonVisibility(NavbarEditor.NAVBAR_HOME, !disableHome);
-        setButtonVisibility(NavbarEditor.NAVBAR_RECENT, !disableRecent);
-        setButtonVisibility(NavbarEditor.NAVBAR_RECENT, !disableRecent);
+//        setButtonVisibility(NavbarEditor.NAVBAR_HOME, !disableHome);
+//        setButtonVisibility(NavbarEditor.NAVBAR_RECENT, !disableRecent);
+//        setButtonVisibility(NavbarEditor.NAVBAR_RECENT, !disableRecent);
         setButtonVisibility(NavbarEditor.NAVBAR_ALWAYS_MENU, !disableRecent);
         setButtonVisibility(NavbarEditor.NAVBAR_MENU_BIG, !disableRecent);
         setButtonVisibility(NavbarEditor.NAVBAR_SEARCH, !disableRecent);
@@ -895,8 +895,8 @@ public class NavigationBarView extends LinearLayout {
                         mShowMenu ? "true" : "false"));
 
         dumpButton(pw, "back", findButton(NavbarEditor.NAVBAR_BACK));
-        dumpButton(pw, "home", findButton(NavbarEditor.NAVBAR_HOME));
-        dumpButton(pw, "rcnt", findButton(NavbarEditor.NAVBAR_RECENT));
+//        dumpButton(pw, "home", findButton(NavbarEditor.NAVBAR_HOME));
+//        dumpButton(pw, "rcnt", findButton(NavbarEditor.NAVBAR_RECENT));
         dumpButton(pw, "srch", getSearchLight());
         dumpButton(pw, "cmra", getCameraButton());
 
