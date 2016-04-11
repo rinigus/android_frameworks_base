@@ -84,6 +84,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import sfdroid.Helpers;
+
 /**
  * State and management of a single stack of activities.
  */
@@ -2449,6 +2451,9 @@ final class ActivityStack {
             Slog.w(TAG, "Duplicate finish request for " + r);
             return false;
         }
+
+        // sfdroid
+        Helpers.notify_of_app_close(r.packageName);
 
         r.makeFinishing();
         EventLog.writeEvent(EventLogTags.AM_FINISH_ACTIVITY,

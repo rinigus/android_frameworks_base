@@ -73,23 +73,67 @@ namespace android {
             if(!component) ALOGE("component is NULL");
             const char *cmp = env->GetStringUTFChars(component, NULL);
 
-
-            ALOGE("krnlyng %s\n", cmp);
             char buf[2];
             int16_t len = strlen(cmp) + 1;
 
             memcpy(buf, &len, 2);
 
-            if(send(sfdroid_fd, buf, 2, 0) < 0)
+            if(send(sfdroid_fd, buf, 2, MSG_WAITALL) < 0)
             {
-                ALOGE("failed to send application info length");
+                ALOGE("failed to send application info length: %s", strerror(errno));
                 err = 1;
                 goto exit;
             }
 
-            if(send(sfdroid_fd, cmp, len, 0) < 0)
+            if(send(sfdroid_fd, cmp, len, MSG_WAITALL) < 0)
             {
-                ALOGE("failed to send application info");
+                ALOGE("failed to send application info %s", strerror(errno));
+                err = 1;
+                goto exit;
+            }
+
+        exit:
+            env->ReleaseStringUTFChars(component, cmp);
+            if(err)
+            {
+                close(sfdroid_fd);
+                sfdroid_fd = -1;
+            }
+            return;
+        }
+    }
+
+    void sfdroid_Helpers_notify_of_app_close(JNIEnv *env, jobject thiz, jstring component)
+    {
+        if(sfdroid_fd < 0)
+        {
+            sfdroid_fd = connect_to_sfdroid();
+        }
+
+        if(sfdroid_fd >= 0)
+        {
+            int err = 0;
+            if(!component) ALOGE("component is NULL");
+            const char *cmp = env->GetStringUTFChars(component, NULL);
+
+            char buf[2];
+            char buffclose[5120];
+            int16_t len = strlen("close:") + strlen(cmp) + 1;
+
+            memcpy(buf, &len, 2);
+
+            if(send(sfdroid_fd, buf, 2, MSG_WAITALL) < 0)
+            {
+                ALOGE("failed to send application info length: %s", strerror(errno));
+                err = 1;
+                goto exit;
+            }
+
+            snprintf(buffclose, 5120, "close:%s", cmp);
+
+            if(send(sfdroid_fd, buffclose, len, MSG_WAITALL) < 0)
+            {
+                ALOGE("failed to send application info %s", strerror(errno));
                 err = 1;
                 goto exit;
             }
@@ -107,6 +151,7 @@ namespace android {
 
     static JNINativeMethod gsfdroidHelpersMethods[] = {
         { "notify_of_app_start", "(Ljava/lang/String;)V", (void*)sfdroid_Helpers_notify_of_app_start },
+        { "notify_of_app_close", "(Ljava/lang/String;)V", (void*)sfdroid_Helpers_notify_of_app_close },
     };
 
     int register_sfdroid_Helpers(JNIEnv *env)
