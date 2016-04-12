@@ -2782,9 +2782,6 @@ final class ActivityStack {
             return false;
         }
 
-        // sfdroid
-        Helpers.notify_of_app_close(r.packageName);
-
         r.makeFinishing();
         final TaskRecord task = r.task;
         EventLog.writeEvent(EventLogTags.AM_FINISH_ACTIVITY,
@@ -2811,6 +2808,11 @@ final class ActivityStack {
 
         if (mResumedActivity == r) {
             boolean endTask = index <= 0;
+            if(endTask)
+            {
+                // sfdroid
+                Helpers.notify_of_app_close(r.packageName);
+            }
             if (DEBUG_VISBILITY || DEBUG_TRANSITION) Slog.v(TAG,
                     "Prepare close transition: finishing " + r);
             mWindowManager.prepareAppTransition(endTask
