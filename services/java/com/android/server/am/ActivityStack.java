@@ -399,6 +399,20 @@ final class ActivityStack {
         return null;
     }
 
+    final ActivityRecord activityForTask(int taskId) {
+        for (int taskNdx = mTaskHistory.size() - 1; taskNdx >= 0; --taskNdx) {
+            TaskRecord task = mTaskHistory.get(taskNdx);
+            if (task.taskId == taskId) {
+                ArrayList<ActivityRecord> activities = task.mActivities;
+                for (int i = activities.size() - 1; i >= 0; --i) {
+                    final ActivityRecord r = activities.get(i);
+                    return r;
+                }
+            }
+        }
+        return null;
+    }
+
     final ActivityRecord topActivity() {
         // Iterate to find the first non-empty task stack. Note that this code can
         // be simplified once we stop storing tasks with empty mActivities lists.
@@ -3192,10 +3206,9 @@ final class ActivityStack {
             }
         }
 
-        Slog.e(TAG, "krnlyng notify_of_app_close moveTaskToBackLocked");
         // sfdroid
-        ActivityRecord sr = topRunningActivityLocked(null);
-        if(sr != null) Helpers.notify_of_app_close(sr.packageName);
+        ActivityRecord ar = activityForTask(taskId);
+        if(ar != null) Helpers.notify_of_app_close(ar.packageName);
 
         if (reason != null &&
                 (reason.intent.getFlags() & Intent.FLAG_ACTIVITY_NO_ANIMATION) != 0) {
