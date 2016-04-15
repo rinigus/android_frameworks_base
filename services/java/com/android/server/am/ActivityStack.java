@@ -3192,6 +3192,11 @@ final class ActivityStack {
             }
         }
 
+        Slog.e(TAG, "krnlyng notify_of_app_close moveTaskToBackLocked");
+        // sfdroid
+        ActivityRecord sr = topRunningActivityLocked(null);
+        if(sr != null) Helpers.notify_of_app_close(sr.packageName);
+
         if (reason != null &&
                 (reason.intent.getFlags() & Intent.FLAG_ACTIVITY_NO_ANIMATION) != 0) {
             mWindowManager.prepareAppTransition(AppTransition.TRANSIT_NONE, false);
