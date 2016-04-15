@@ -572,7 +572,8 @@ public class AppTransition implements Dump {
                     + " transit=" + transit + " isEntrance=" + enter
                     + " Callers=" + Debug.getCallers(3));
         }
-        return a;
+        return null;
+//        return a;
     }
 
     void postAnimationCallback() {
