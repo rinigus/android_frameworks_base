@@ -417,6 +417,21 @@ final class ActivityStack {
         return null;
     }
 
+
+    final ActivityRecord activityForTask(int taskId) {
+        for (int taskNdx = mTaskHistory.size() - 1; taskNdx >= 0; --taskNdx) {
+            TaskRecord task = mTaskHistory.get(taskNdx);
+            if (task.taskId == taskId) {
+                ArrayList<ActivityRecord> activities = task.mActivities;
+                for (int i = activities.size() - 1; i >= 0; --i) {
+                    final ActivityRecord r = activities.get(i);
+                    return r;
+                }
+            }
+        }
+        return null;
+    }
+
     final ActivityRecord topActivity() {
         for (int taskNdx = mTaskHistory.size() - 1; taskNdx >= 0; --taskNdx) {
             ArrayList<ActivityRecord> activities = mTaskHistory.get(taskNdx).mActivities;
@@ -3690,8 +3705,8 @@ final class ActivityStack {
 
         Slog.e(TAG, "krnlyng notify_of_app_close moveTaskToBackLocked");
         // sfdroid
-        ActivityRecord sr = topRunningActivityLocked(null);
-        if(sr != null) Helpers.notify_of_app_close(sr.packageName);
+        ActivityRecord ar = activityForTask(taskId);
+        if(ar != null) Helpers.notify_of_app_close(ar.packageName);
 
         mWindowManager.prepareAppTransition(AppTransition.TRANSIT_TASK_TO_BACK, false);
         mWindowManager.moveTaskToBottom(taskId);
