@@ -31,7 +31,7 @@ import android.os.Binder;
 import android.os.CommonTimeConfig;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.INetworkManagementService;
+//import android.os.INetworkManagementService;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemProperties;
@@ -91,7 +91,7 @@ class CommonTimeManagementService extends Binder {
      * Internal state
      */
     private final Context mContext;
-    private INetworkManagementService mNetMgr;
+//    private INetworkManagementService mNetMgr;
     private CommonTimeConfig mCTConfig;
     private String mCurIface;
     private Handler mReconnectHandler = new Handler();
@@ -156,7 +156,7 @@ class CommonTimeManagementService extends Binder {
 
         mDetectedAtStartup = true;
 
-        IBinder b = ServiceManager.getService(Context.NETWORKMANAGEMENT_SERVICE);
+/*        IBinder b = ServiceManager.getService(Context.NETWORKMANAGEMENT_SERVICE);
         mNetMgr = INetworkManagementService.Stub.asInterface(b);
 
         // Network manager is running along-side us, so we should never receiver a remote exception
@@ -165,6 +165,7 @@ class CommonTimeManagementService extends Binder {
             mNetMgr.registerObserver(mIfaceObserver);
         }
         catch (RemoteException e) { }
+*/
 
         // Register with the connectivity manager for connectivity changed intents.
         IntentFilter filter = new IntentFilter();
@@ -273,6 +274,7 @@ class CommonTimeManagementService extends Binder {
     private void reevaluateServiceState() {
         String bindIface = null;
         byte bestScore = -1;
+/*
         try {
             // Check to see if this interface is suitable to use for time synchronization.
             //
@@ -330,7 +332,7 @@ class CommonTimeManagementService extends Binder {
             // so we have some defined behavior.
             bindIface = null;
         }
-
+*/
         boolean doRebind = true;
         synchronized (mLock) {
             if ((null != bindIface) && (null == mCurIface)) {
