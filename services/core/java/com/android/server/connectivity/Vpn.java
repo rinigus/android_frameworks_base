@@ -57,7 +57,7 @@ import android.net.UidRange;
 import android.os.Binder;
 import android.os.FileUtils;
 import android.os.IBinder;
-import android.os.INetworkManagementService;
+//import android.os.INetworkManagementService;
 import android.os.Looper;
 import android.os.Parcel;
 import android.os.ParcelFileDescriptor;
@@ -115,7 +115,7 @@ public class Vpn {
     private PendingIntent mStatusIntent;
     private volatile boolean mEnableTeardown = true;
     private final IConnectivityManager mConnService;
-    private final INetworkManagementService mNetd;
+//    private final INetworkManagementService mNetd;
     private VpnConfig mConfig;
     private NetworkAgent mNetworkAgent;
     private final Looper mLooper;
@@ -129,10 +129,10 @@ public class Vpn {
     // Handle of user initiating VPN.
     private final int mUserHandle;
 
-    public Vpn(Looper looper, Context context, INetworkManagementService netService,
+    public Vpn(Looper looper, Context context, /*INetworkManagementService netService,*/
             IConnectivityManager connService, int userHandle) {
         mContext = context;
-        mNetd = netService;
+//        mNetd = netService;
         mConnService = connService;
         mUserHandle = userHandle;
         mLooper = looper;
@@ -140,11 +140,13 @@ public class Vpn {
         mPackage = VpnConfig.LEGACY_VPN;
         mOwnerUID = getAppUid(mPackage, mUserHandle);
 
+/*
         try {
             netService.registerObserver(mObserver);
         } catch (RemoteException e) {
             Log.wtf(TAG, "Problem registering observer", e);
         }
+*/
         if (userHandle == UserHandle.USER_OWNER) {
             // Owner's VPN also needs to handle restricted users
             mUserIntentReceiver = new BroadcastReceiver() {
@@ -267,20 +269,24 @@ public class Vpn {
                 mLegacyVpnRunner = null;
             }
 
+/*
             try {
                 mNetd.denyProtect(mOwnerUID);
             } catch (Exception e) {
                 Log.wtf(TAG, "Failed to disallow UID " + mOwnerUID + " to call protect() " + e);
             }
+*/
 
             Log.i(TAG, "Switched from " + mPackage + " to " + newPackage);
             mPackage = newPackage;
             mOwnerUID = getAppUid(newPackage, mUserHandle);
+/*
             try {
                 mNetd.allowProtect(mOwnerUID);
             } catch (Exception e) {
                 Log.wtf(TAG, "Failed to allow UID " + mOwnerUID + " to call protect() " + e);
             }
+*/
             mConfig = null;
 
             updateState(DetailedState.IDLE, "prepare");

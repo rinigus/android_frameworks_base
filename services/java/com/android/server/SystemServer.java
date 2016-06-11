@@ -670,6 +670,7 @@ public final class SystemServer {
                 }
             }
 
+/*
             if (!disableNetwork) {
                 try {
                     Slog.i(TAG, "NetworkManagement Service");
@@ -679,6 +680,7 @@ public final class SystemServer {
                     reportWtf("starting NetworkManagement Service", e);
                 }
             }
+*/
 
             if (!disableNonCoreServices) {
                 try {
@@ -701,7 +703,7 @@ public final class SystemServer {
 
                 try {
                     Slog.i(TAG, "NetworkStats Service");
-                    networkStats = new NetworkStatsService(context, networkManagement, alarm);
+                    networkStats = new NetworkStatsService(context, /*networkManagement,*/ alarm);
                     ServiceManager.addService(Context.NETWORK_STATS_SERVICE, networkStats);
                 } catch (Throwable e) {
                     reportWtf("starting NetworkStats Service", e);
@@ -712,7 +714,7 @@ public final class SystemServer {
                     networkPolicy = new NetworkPolicyManagerService(
                             context, mActivityManagerService,
                             (IPowerManager)ServiceManager.getService(Context.POWER_SERVICE),
-                            networkStats, networkManagement);
+                            networkStats/*, networkManagement*/);
                     ServiceManager.addService(Context.NETWORK_POLICY_SERVICE, networkPolicy);
                 } catch (Throwable e) {
                     reportWtf("starting NetworkPolicy Service", e);
@@ -732,7 +734,7 @@ public final class SystemServer {
                 try {
                     Slog.i(TAG, "Connectivity Service");
                     connectivity = new ConnectivityService(
-                            context, networkManagement, networkStats, networkPolicy);
+                            context, /*networkManagement,*/ networkStats, networkPolicy);
                     ServiceManager.addService(Context.CONNECTIVITY_SERVICE, connectivity);
                     networkStats.bindConnectivityManager(connectivity);
                     networkPolicy.bindConnectivityManager(connectivity);

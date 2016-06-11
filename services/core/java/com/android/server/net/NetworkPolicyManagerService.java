@@ -112,7 +112,7 @@ import android.os.Binder;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.INetworkManagementService;
+//import android.os.INetworkManagementService;
 import android.os.IPowerManager;
 import android.os.Message;
 import android.os.MessageQueue.IdleHandler;
@@ -240,7 +240,7 @@ public class NetworkPolicyManagerService extends INetworkPolicyManager.Stub {
     private final IActivityManager mActivityManager;
     private final IPowerManager mPowerManager;
     private final INetworkStatsService mNetworkStats;
-    private final INetworkManagementService mNetworkManager;
+//    private final INetworkManagementService mNetworkManager;
     private final TrustedTime mTime;
 
     private IConnectivityManager mConnManager;
@@ -299,9 +299,9 @@ public class NetworkPolicyManagerService extends INetworkPolicyManager.Stub {
     // TODO: migrate notifications to SystemUI
 
     public NetworkPolicyManagerService(Context context, IActivityManager activityManager,
-            IPowerManager powerManager, INetworkStatsService networkStats,
-            INetworkManagementService networkManagement) {
-        this(context, activityManager, powerManager, networkStats, networkManagement,
+            IPowerManager powerManager, INetworkStatsService networkStats/*,
+            INetworkManagementService networkManagement*/) {
+        this(context, activityManager, powerManager, networkStats, /*networkManagement,*/
                 NtpTrustedTime.getInstance(context), getSystemDir(), false);
     }
 
@@ -311,13 +311,13 @@ public class NetworkPolicyManagerService extends INetworkPolicyManager.Stub {
 
     public NetworkPolicyManagerService(Context context, IActivityManager activityManager,
             IPowerManager powerManager, INetworkStatsService networkStats,
-            INetworkManagementService networkManagement, TrustedTime time, File systemDir,
+            /*INetworkManagementService networkManagement, */TrustedTime time, File systemDir,
             boolean suppressDefaultPolicy) {
         mContext = checkNotNull(context, "missing context");
         mActivityManager = checkNotNull(activityManager, "missing activityManager");
         mPowerManager = checkNotNull(powerManager, "missing powerManager");
         mNetworkStats = checkNotNull(networkStats, "missing networkStats");
-        mNetworkManager = checkNotNull(networkManagement, "missing networkManagement");
+        //mNetworkManager = checkNotNull(networkManagement, "missing networkManagement");
         mTime = checkNotNull(time, "missing TrustedTime");
 
         HandlerThread thread = new HandlerThread(TAG);
@@ -387,7 +387,7 @@ public class NetworkPolicyManagerService extends INetworkPolicyManager.Stub {
 
         try {
             mActivityManager.registerProcessObserver(mProcessObserver);
-            mNetworkManager.registerObserver(mAlertObserver);
+            //mNetworkManager.registerObserver(mAlertObserver);
         } catch (RemoteException e) {
             // ignored; both services live in system_server
         }
@@ -2158,6 +2158,7 @@ public class NetworkPolicyManagerService extends INetworkPolicyManager.Stub {
     };
 
     private void setInterfaceQuota(String iface, long quotaBytes) {
+/*
         try {
             mNetworkManager.setInterfaceQuota(iface, quotaBytes);
         } catch (IllegalStateException e) {
@@ -2165,9 +2166,11 @@ public class NetworkPolicyManagerService extends INetworkPolicyManager.Stub {
         } catch (RemoteException e) {
             // ignored; service lives in system_server
         }
+*/
     }
 
     private void removeInterfaceQuota(String iface) {
+/*
         try {
             mNetworkManager.removeInterfaceQuota(iface);
         } catch (IllegalStateException e) {
@@ -2175,9 +2178,11 @@ public class NetworkPolicyManagerService extends INetworkPolicyManager.Stub {
         } catch (RemoteException e) {
             // ignored; service lives in system_server
         }
+*/
     }
 
     private void setUidNetworkRules(int uid, boolean rejectOnQuotaInterfaces) {
+/*
         try {
             mNetworkManager.setUidNetworkRules(uid, rejectOnQuotaInterfaces);
         } catch (IllegalStateException e) {
@@ -2185,6 +2190,7 @@ public class NetworkPolicyManagerService extends INetworkPolicyManager.Stub {
         } catch (RemoteException e) {
             // ignored; service lives in system_server
         }
+*/
     }
 
     /**
@@ -2211,6 +2217,7 @@ public class NetworkPolicyManagerService extends INetworkPolicyManager.Stub {
     }
 
     private boolean isBandwidthControlEnabled() {
+/*
         final long token = Binder.clearCallingIdentity();
         try {
             return mNetworkManager.isBandwidthControlEnabled();
@@ -2220,6 +2227,8 @@ public class NetworkPolicyManagerService extends INetworkPolicyManager.Stub {
         } finally {
             Binder.restoreCallingIdentity(token);
         }
+*/
+        return false;
     }
 
     /**
