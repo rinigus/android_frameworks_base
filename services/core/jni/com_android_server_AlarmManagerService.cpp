@@ -446,10 +446,12 @@ static jlong init_timerfd()
 
 static jlong android_server_AlarmManagerService_init(JNIEnv*, jobject)
 {
+/*
     jlong ret = init_alarm_driver();
     if (ret) {
         return ret;
     }
+*/
 
     return init_timerfd();
 }
