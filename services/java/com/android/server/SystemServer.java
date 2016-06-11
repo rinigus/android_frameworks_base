@@ -882,13 +882,14 @@ public final class SystemServer {
             }
 
             if (!disableNonCoreServices) {
+/*
                 if (mPackageManager.hasSystemFeature(PackageManager.FEATURE_USB_HOST)
                         || mPackageManager.hasSystemFeature(
                                 PackageManager.FEATURE_USB_ACCESSORY)) {
                     // Manage USB host and device support
                     mSystemServiceManager.startService(USB_SERVICE_CLASS);
                 }
-
+*/
                 try {
                     Slog.i(TAG, "Serial Service");
                     // Serial port support
