@@ -572,26 +572,26 @@ public class NsdService extends INsdManager.Stub {
         return sb.toString();
     }
 
-    private NativeDaemonConnector mNativeConnector;
-    private final CountDownLatch mNativeDaemonConnected = new CountDownLatch(1);
+//    private NativeDaemonConnector mNativeConnector;
+//    private final CountDownLatch mNativeDaemonConnected = new CountDownLatch(1);
 
     private NsdService(Context context) {
         mContext = context;
         mContentResolver = context.getContentResolver();
 
-        mNativeConnector = new NativeDaemonConnector(new NativeCallbackReceiver(), "mdns", 10,
-                MDNS_TAG, 25, null);
+//        mNativeConnector = new NativeDaemonConnector(new NativeCallbackReceiver(), "mdns", 10,
+//                MDNS_TAG, 25, null);
 
         mNsdStateMachine = new NsdStateMachine(TAG);
         mNsdStateMachine.start();
 
-        Thread th = new Thread(mNativeConnector, MDNS_TAG);
-        th.start();
+//        Thread th = new Thread(mNativeConnector, MDNS_TAG);
+//        th.start();
     }
 
     public static NsdService create(Context context) throws InterruptedException {
         NsdService service = new NsdService(context);
-        service.mNativeDaemonConnected.await();
+//        service.mNativeDaemonConnected.await();
         return service;
     }
 
@@ -667,7 +667,7 @@ public class NsdService extends INsdManager.Stub {
 
     class NativeCallbackReceiver implements INativeDaemonConnectorCallbacks {
         public void onDaemonConnected() {
-            mNativeDaemonConnected.countDown();
+//            mNativeDaemonConnected.countDown();
         }
 
         public boolean onCheckHoldWakeLock(int code) {
@@ -684,6 +684,7 @@ public class NsdService extends INsdManager.Stub {
     }
 
     private boolean startMDnsDaemon() {
+/*
         if (DBG) Slog.d(TAG, "startMDnsDaemon");
         try {
             mNativeConnector.execute("mdnssd", "start-service");
@@ -692,9 +693,12 @@ public class NsdService extends INsdManager.Stub {
             return false;
         }
         return true;
+*/
+        return false;
     }
 
     private boolean stopMDnsDaemon() {
+/*
         if (DBG) Slog.d(TAG, "stopMDnsDaemon");
         try {
             mNativeConnector.execute("mdnssd", "stop-service");
@@ -703,9 +707,12 @@ public class NsdService extends INsdManager.Stub {
             return false;
         }
         return true;
+*/
+        return true;
     }
 
     private boolean registerService(int regId, NsdServiceInfo service) {
+/*
         if (DBG) Slog.d(TAG, "registerService: " + regId + " " + service);
         try {
             Command cmd = new Command("mdnssd", "register", regId, service.getServiceName(),
@@ -730,9 +737,12 @@ public class NsdService extends INsdManager.Stub {
             return false;
         }
         return true;
+*/
+        return false;
     }
 
     private boolean unregisterService(int regId) {
+/*
         if (DBG) Slog.d(TAG, "unregisterService: " + regId);
         try {
             mNativeConnector.execute("mdnssd", "stop-register", regId);
@@ -741,9 +751,12 @@ public class NsdService extends INsdManager.Stub {
             return false;
         }
         return true;
+*/
+        return true;
     }
 
     private boolean updateService(int regId, DnsSdTxtRecord t) {
+/*
         if (DBG) Slog.d(TAG, "updateService: " + regId + " " + t);
         try {
             if (t == null) return false;
@@ -753,9 +766,12 @@ public class NsdService extends INsdManager.Stub {
             return false;
         }
         return true;
+*/
+        return false;
     }
 
     private boolean discoverServices(int discoveryId, String serviceType) {
+/*
         if (DBG) Slog.d(TAG, "discoverServices: " + discoveryId + " " + serviceType);
         try {
             mNativeConnector.execute("mdnssd", "discover", discoveryId, serviceType);
@@ -764,9 +780,12 @@ public class NsdService extends INsdManager.Stub {
             return false;
         }
         return true;
+*/
+        return false;
     }
 
     private boolean stopServiceDiscovery(int discoveryId) {
+/*
         if (DBG) Slog.d(TAG, "stopServiceDiscovery: " + discoveryId);
         try {
             mNativeConnector.execute("mdnssd", "stop-discover", discoveryId);
@@ -775,9 +794,12 @@ public class NsdService extends INsdManager.Stub {
             return false;
         }
         return true;
+*/
+        return true;
     }
 
     private boolean resolveService(int resolveId, NsdServiceInfo service) {
+/*
         if (DBG) Slog.d(TAG, "resolveService: " + resolveId + " " + service);
         try {
             mNativeConnector.execute("mdnssd", "resolve", resolveId, service.getServiceName(),
@@ -787,9 +809,12 @@ public class NsdService extends INsdManager.Stub {
             return false;
         }
         return true;
+*/
+        return false;
     }
 
     private boolean stopResolveService(int resolveId) {
+/*
         if (DBG) Slog.d(TAG, "stopResolveService: " + resolveId);
         try {
             mNativeConnector.execute("mdnssd", "stop-resolve", resolveId);
@@ -798,9 +823,12 @@ public class NsdService extends INsdManager.Stub {
             return false;
         }
         return true;
+*/
+        return true;
     }
 
     private boolean getAddrInfo(int resolveId, String hostname) {
+/*
         if (DBG) Slog.d(TAG, "getAdddrInfo: " + resolveId);
         try {
             mNativeConnector.execute("mdnssd", "getaddrinfo", resolveId, hostname);
@@ -809,9 +837,12 @@ public class NsdService extends INsdManager.Stub {
             return false;
         }
         return true;
+*/
+        return false;
     }
 
     private boolean stopGetAddrInfo(int resolveId) {
+/*
         if (DBG) Slog.d(TAG, "stopGetAdddrInfo: " + resolveId);
         try {
             mNativeConnector.execute("mdnssd", "stop-getaddrinfo", resolveId);
@@ -819,6 +850,8 @@ public class NsdService extends INsdManager.Stub {
             Slog.e(TAG, "Failed to stopGetAddrInfo " + e);
             return false;
         }
+        return true;
+*/
         return true;
     }
 

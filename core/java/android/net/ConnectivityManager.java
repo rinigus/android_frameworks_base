@@ -31,7 +31,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.INetworkActivityListener;
-import android.os.INetworkManagementService;
+//import android.os.INetworkManagementService;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
@@ -461,7 +461,7 @@ public class ConnectivityManager {
      */
     private static ConnectivityManager sInstance;
 
-    private INetworkManagementService mNMService;
+//    private INetworkManagementService mNMService;
 
     /**
      * Tests if a given integer represents a valid network type.
@@ -1423,7 +1423,7 @@ public class ConnectivityManager {
         public void onNetworkActive();
     }
 
-    private INetworkManagementService getNetworkManagementService() {
+/*  private INetworkManagementService getNetworkManagementService() {
         synchronized (this) {
             if (mNMService != null) {
                 return mNMService;
@@ -1433,6 +1433,7 @@ public class ConnectivityManager {
             return mNMService;
         }
     }
+*/
 
     private final ArrayMap<OnNetworkActiveListener, INetworkActivityListener>
             mNetworkActivityListeners
@@ -1458,11 +1459,13 @@ public class ConnectivityManager {
             }
         };
 
+/*
         try {
             getNetworkManagementService().registerNetworkActivityListener(rl);
             mNetworkActivityListeners.put(l, rl);
         } catch (RemoteException e) {
         }
+*/
     }
 
     /**
@@ -1476,10 +1479,12 @@ public class ConnectivityManager {
         if (rl == null) {
             throw new IllegalArgumentException("Listener not registered: " + l);
         }
+/*
         try {
             getNetworkManagementService().unregisterNetworkActivityListener(rl);
         } catch (RemoteException e) {
         }
+*/
     }
 
     /**
@@ -1491,10 +1496,12 @@ public class ConnectivityManager {
      * initiate network traffic, as the network is already active.
      */
     public boolean isDefaultNetworkActive() {
+/*
         try {
             return getNetworkManagementService().isNetworkActive();
         } catch (RemoteException e) {
         }
+*/
         return false;
     }
 

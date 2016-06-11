@@ -32,7 +32,7 @@ import android.net.RouteInfo;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.os.INetworkManagementService;
+//import android.os.INetworkManagementService;
 import android.os.RemoteException;
 import android.util.Slog;
 
@@ -49,7 +49,7 @@ public class Nat464Xlat extends BaseNetworkObserver {
     // This must match the interface prefix in clatd.c.
     private static final String CLAT_PREFIX = "v4-";
 
-    private final INetworkManagementService mNMService;
+//    private final INetworkManagementService mNMService;
 
     // ConnectivityService Handler for LinkProperties updates.
     private final Handler mHandler;
@@ -74,9 +74,9 @@ public class Nat464Xlat extends BaseNetworkObserver {
     private boolean mIsRunning;
 
     public Nat464Xlat(
-            Context context, INetworkManagementService nmService,
+            Context context, /*INetworkManagementService nmService,*/
             Handler handler, NetworkAgentInfo nai) {
-        mNMService = nmService;
+//        mNMService = nmService;
         mHandler = handler;
         mNetwork = nai;
     }
@@ -127,13 +127,14 @@ public class Nat464Xlat extends BaseNetworkObserver {
             return;
         }
 
-        try {
+/*        try {
             mNMService.unregisterObserver(this);
             mNMService.registerObserver(this);
         } catch(RemoteException e) {
             Slog.e(TAG, "startClat: Can't register interface observer for clat on " + mNetwork);
             return;
         }
+*/
 
         mBaseIface = mNetwork.linkProperties.getInterfaceName();
         if (mBaseIface == null) {
@@ -142,13 +143,14 @@ public class Nat464Xlat extends BaseNetworkObserver {
         }
         mIface = CLAT_PREFIX + mBaseIface;
         // From now on, isStarted() will return true.
-
+/*
         Slog.i(TAG, "Starting clatd on " + mBaseIface);
         try {
             mNMService.startClatd(mBaseIface);
         } catch(RemoteException|IllegalStateException e) {
             Slog.e(TAG, "Error starting clatd: " + e);
         }
+*/
     }
 
     /**
@@ -156,12 +158,14 @@ public class Nat464Xlat extends BaseNetworkObserver {
      */
     public void stop() {
         if (isStarted()) {
+/*
             Slog.i(TAG, "Stopping clatd");
             try {
                 mNMService.stopClatd(mBaseIface);
             } catch(RemoteException|IllegalStateException e) {
                 Slog.e(TAG, "Error stopping clatd: " + e);
             }
+*/
             // When clatd stops and its interface is deleted, interfaceRemoved() will notify
             // ConnectivityService and call clear().
         } else {
@@ -215,6 +219,7 @@ public class Nat464Xlat extends BaseNetworkObserver {
     }
 
     private LinkAddress getLinkAddress(String iface) {
+/*
         try {
             InterfaceConfiguration config = mNMService.getInterfaceConfig(iface);
             return config.getLinkAddress();
@@ -222,9 +227,12 @@ public class Nat464Xlat extends BaseNetworkObserver {
             Slog.e(TAG, "Error getting link properties: " + e);
             return null;
         }
+*/
+        return null;
     }
 
     private void maybeSetIpv6NdOffload(String iface, boolean on) {
+/*
         if (mNetwork.networkInfo.getType() != TYPE_WIFI) {
             return;
         }
@@ -234,6 +242,7 @@ public class Nat464Xlat extends BaseNetworkObserver {
         } catch(RemoteException|IllegalStateException e) {
             Slog.w(TAG, "Changing IPv6 ND offload on " + iface + "failed: " + e);
         }
+*/
     }
 
     @Override
@@ -266,12 +275,14 @@ public class Nat464Xlat extends BaseNetworkObserver {
                 // Note that this method can be called by the interface observer at the same time
                 // that ConnectivityService calls stop(). In this case, the second call to
                 // stopClatd() will just throw IllegalStateException, which we'll ignore.
+                /*
                 try {
                     mNMService.unregisterObserver(this);
                     mNMService.stopClatd(mBaseIface);
                 } catch (RemoteException|IllegalStateException e) {
                     // Well, we tried.
                 }
+                */
                 maybeSetIpv6NdOffload(mBaseIface, true);
                 LinkProperties lp = new LinkProperties(mNetwork.linkProperties);
                 lp.removeStackedLink(mIface);

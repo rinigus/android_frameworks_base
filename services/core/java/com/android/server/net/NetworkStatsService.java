@@ -90,7 +90,7 @@ import android.os.DropBoxManager;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.INetworkManagementService;
+//import android.os.INetworkManagementService;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.RemoteException;
@@ -146,7 +146,7 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
     private static final String TAG_NETSTATS_ERROR = "netstats_error";
 
     private final Context mContext;
-    private final INetworkManagementService mNetworkManager;
+//    private final INetworkManagementService mNetworkManager;
     private final AlarmManager mAlarmManager;
     private final TrustedTime mTime;
     private final TelephonyManager mTeleManager;
@@ -239,8 +239,8 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
     private long mGlobalAlertBytes;
 
     public NetworkStatsService(
-            Context context, INetworkManagementService networkManager, IAlarmManager alarmManager) {
-        this(context, networkManager, alarmManager, NtpTrustedTime.getInstance(context),
+            Context context, /*INetworkManagementService networkManager, */IAlarmManager alarmManager) {
+        this(context, /*networkManager,*/ alarmManager, NtpTrustedTime.getInstance(context),
                 getDefaultSystemDir(), new DefaultNetworkStatsSettings(context));
     }
 
@@ -248,11 +248,11 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
         return new File(Environment.getDataDirectory(), "system");
     }
 
-    public NetworkStatsService(Context context, INetworkManagementService networkManager,
+    public NetworkStatsService(Context context, /*INetworkManagementService networkManager,*/
             IAlarmManager alarmManager, TrustedTime time, File systemDir,
             NetworkStatsSettings settings) {
         mContext = checkNotNull(context, "missing Context");
-        mNetworkManager = checkNotNull(networkManager, "missing INetworkManagementService");
+//        mNetworkManager = checkNotNull(networkManager, "missing INetworkManagementService");
         mTime = checkNotNull(time, "missing TrustedTime");
         mTeleManager = checkNotNull(TelephonyManager.getDefault(), "missing TelephonyManager");
         mSettings = checkNotNull(settings, "missing NetworkStatsSettings");
@@ -323,11 +323,13 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
         final IntentFilter shutdownFilter = new IntentFilter(ACTION_SHUTDOWN);
         mContext.registerReceiver(mShutdownReceiver, shutdownFilter);
 
+/*
         try {
             mNetworkManager.registerObserver(mAlertObserver);
         } catch (RemoteException e) {
             // ignored; service lives in system_server
         }
+*/
 
         registerPollAlarmLocked();
         registerGlobalAlert();
@@ -417,6 +419,7 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
      * has been transferred.
      */
     private void registerGlobalAlert() {
+/*
         try {
             mNetworkManager.setGlobalAlert(mGlobalAlertBytes);
         } catch (IllegalStateException e) {
@@ -424,6 +427,7 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
         } catch (RemoteException e) {
             // ignored; service lives in system_server
         }
+*/
     }
 
     @Override
@@ -536,6 +540,7 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
         // for now, read network layer stats and flatten across all ifaces
         final long token = Binder.clearCallingIdentity();
         final NetworkStats networkLayer;
+/*
         try {
             networkLayer = mNetworkManager.getNetworkStatsUidDetail(uid);
         } finally {
@@ -554,8 +559,9 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
             entry.iface = IFACE_ALL;
             dataLayer.combineValues(entry);
         }
-
         return dataLayer;
+*/
+        return null;
     }
 
     @Override
@@ -866,6 +872,7 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
         final long currentTime = mTime.hasCache() ? mTime.currentTimeMillis()
                 : System.currentTimeMillis();
 
+/*
         try {
             // snapshot and record current counters; read UID stats first to
             // avoid overcounting dev stats.
@@ -883,6 +890,7 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
         } catch (RemoteException e) {
             // ignored; service lives in system_server
         }
+*/
     }
 
     private void performPoll(int flags) {
@@ -920,6 +928,7 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
         final long currentTime = mTime.hasCache() ? mTime.currentTimeMillis()
                 : System.currentTimeMillis();
 
+/*
         try {
             // snapshot and record current counters; read UID stats first to
             // avoid overcounting dev stats.
@@ -939,6 +948,7 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
             // ignored; service lives in system_server
             return;
         }
+*/
 
         // persist any pending data depending on requested flags
         if (persistForce) {
@@ -1151,6 +1161,7 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
      * {@link TrafficStats#UID_TETHERING} and {@link #mUidOperations} values.
      */
     private NetworkStats getNetworkStatsUidDetail() throws RemoteException {
+/*
         final NetworkStats uidSnapshot = mNetworkManager.getNetworkStatsUidDetail(UID_ALL);
 
         // fold tethering stats and operations into uid snapshot
@@ -1159,6 +1170,8 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
         uidSnapshot.combineAllValues(mUidOperations);
 
         return uidSnapshot;
+*/
+        return null;
     }
 
     /**
@@ -1166,12 +1179,15 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
      * {@link NetworkStats} if any problems are encountered.
      */
     private NetworkStats getNetworkStatsTethering() throws RemoteException {
+/*
         try {
             return mNetworkManager.getNetworkStatsTethering();
         } catch (IllegalStateException e) {
             Log.wtf(TAG, "problem reading network stats", e);
             return new NetworkStats(0L, 10);
         }
+*/
+        return new NetworkStats(0L, 10);
     }
 
     private Handler.Callback mHandlerCallback = new Handler.Callback() {
@@ -1205,6 +1221,7 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
     }
 
     private boolean isBandwidthControlEnabled() {
+/*
         final long token = Binder.clearCallingIdentity();
         try {
             return mNetworkManager.isBandwidthControlEnabled();
@@ -1214,6 +1231,8 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
         } finally {
             Binder.restoreCallingIdentity(token);
         }
+*/
+        return false;
     }
 
     private class DropBoxNonMonotonicObserver implements NonMonotonicObserver<String> {
