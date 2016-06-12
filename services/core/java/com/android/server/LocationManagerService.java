@@ -1199,6 +1199,8 @@ public class LocationManagerService extends ILocationManager.Stub {
      */
     @Override
     public List<String> getAllProviders() {
+        return new ArrayList<String>(0);
+/*
         ArrayList<String> out;
         synchronized (mLock) {
             out = new ArrayList<String>(mProviders.size());
@@ -1213,6 +1215,7 @@ public class LocationManagerService extends ILocationManager.Stub {
 
         if (D) Log.d(TAG, "getAllProviders()=" + out);
         return out;
+*/
     }
 
     /**
@@ -1222,6 +1225,8 @@ public class LocationManagerService extends ILocationManager.Stub {
      */
     @Override
     public List<String> getProviders(Criteria criteria, boolean enabledOnly) {
+        return new ArrayList<String>(0);
+/*
         int allowedResolutionLevel = getCallerAllowedResolutionLevel();
         ArrayList<String> out;
         int uid = Binder.getCallingUid();;
@@ -1252,6 +1257,7 @@ public class LocationManagerService extends ILocationManager.Stub {
 
         if (D) Log.d(TAG, "getProviders()=" + out);
         return out;
+*/
     }
 
     /**
@@ -2030,6 +2036,7 @@ public class LocationManagerService extends ILocationManager.Stub {
 
     @Override
     public boolean isProviderEnabled(String provider) {
+/*
         // Fused provider is accessed indirectly via criteria rather than the provider-based APIs,
         // so we discourage its use
         if (LocationManager.FUSED_PROVIDER.equals(provider)) return false;
@@ -2046,6 +2053,8 @@ public class LocationManagerService extends ILocationManager.Stub {
         } finally {
             Binder.restoreCallingIdentity(identity);
         }
+*/
+        return false;
     }
 
     /**
