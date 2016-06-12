@@ -56,8 +56,8 @@ final class DisplayPowerState {
 
     private final Handler mHandler;
     private final Choreographer mChoreographer;
-    private final DisplayBlanker mBlanker;
-    private final Light mBacklight;
+//    private final DisplayBlanker mBlanker;
+//    private final Light mBacklight;
     private final ColorFade mColorFade;
     private final PhotonicModulator mPhotonicModulator;
 
@@ -76,8 +76,8 @@ final class DisplayPowerState {
     public DisplayPowerState(DisplayBlanker blanker, Light backlight, ColorFade electronBeam) {
         mHandler = new Handler(true /*async*/);
         mChoreographer = Choreographer.getInstance();
-        mBlanker = blanker;
-        mBacklight = backlight;
+//        mBlanker = blanker;
+//        mBacklight = backlight;
         mColorFade = electronBeam;
         mPhotonicModulator = new PhotonicModulator();
         mPhotonicModulator.start();
@@ -426,6 +426,7 @@ final class DisplayPowerState {
         }
 
         private void requestDisplayState(int state) {
+/*
             Trace.traceBegin(Trace.TRACE_TAG_POWER, "requestDisplayState("
                     + Display.stateToString(state) + ")");
             try {
@@ -433,15 +434,18 @@ final class DisplayPowerState {
             } finally {
                 Trace.traceEnd(Trace.TRACE_TAG_POWER);
             }
+*/
         }
 
         private void setBrightness(int backlight) {
+/*
             Trace.traceBegin(Trace.TRACE_TAG_POWER, "setBrightness(" + backlight + ")");
             try {
                 mBacklight.setBrightness(backlight);
             } finally {
                 Trace.traceEnd(Trace.TRACE_TAG_POWER);
             }
+*/
         }
     }
 }
