@@ -173,9 +173,9 @@ static void ClassInit(JNIEnv* env, jclass clazz) {
 
   // open the hardware module
   const hw_module_t* module = NULL;
-  int err = hw_get_module(FUSED_LOCATION_HARDWARE_MODULE_ID, &module);
+  int err = -1; //hw_get_module(FUSED_LOCATION_HARDWARE_MODULE_ID, &module);
   if (err != 0) {
-    ALOGE("Error hw_get_module '%s': %d", FUSED_LOCATION_HARDWARE_MODULE_ID, err);
+    ALOGE("Error hw_get_module '%s': sfdroid disabled", FUSED_LOCATION_HARDWARE_MODULE_ID);
     return;
   }
 
