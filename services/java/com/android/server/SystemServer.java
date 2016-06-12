@@ -539,9 +539,12 @@ public final class SystemServer {
             } else if (disableBluetooth) {
                 Slog.i(TAG, "Bluetooth Service disabled by config");
             } else {
+                Slog.i(TAG, "sfdroid: Bluetooth Service disabled");
+/*
                 Slog.i(TAG, "Bluetooth Manager Service");
                 bluetooth = new BluetoothManagerService(context);
                 ServiceManager.addService(BluetoothAdapter.BLUETOOTH_MANAGER_SERVICE, bluetooth);
+*/
             }
         } catch (RuntimeException e) {
             Slog.e("System", "******************************************");
