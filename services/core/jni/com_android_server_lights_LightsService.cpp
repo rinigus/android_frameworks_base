@@ -70,7 +70,8 @@ static jlong init_native(JNIEnv *env, jobject clazz)
     
     devices = (Devices*)malloc(sizeof(Devices));
 
-    err = hw_get_module(LIGHTS_HARDWARE_MODULE_ID, (hw_module_t const**)&module);
+    err = -1;
+    //err = hw_get_module(LIGHTS_HARDWARE_MODULE_ID, (hw_module_t const**)&module);
     if (err == 0) {
         devices->lights[LIGHT_INDEX_BACKLIGHT]
                 = get_device(module, LIGHT_ID_BACKLIGHT);
