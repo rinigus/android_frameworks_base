@@ -974,7 +974,11 @@ public class AppOpsService extends IAppOpsService.Stub {
                     } catch (RemoteException e) {
                         Slog.w(TAG, "Could not contact PackageManager", e);
                     }
-                    if (pkgUid != uid) {
+                    if("droidmedia".equals(packageName) && uid == 100000)
+                    {
+                        Slog.w(TAG, "sfdroid: allowing access for droidmedia");
+                    }
+                    else if (pkgUid != uid) {
                         // Oops!  The package name is not valid for the uid they are calling
                         // under.  Abort.
                         Slog.w(TAG, "Bad call: specified package " + packageName
