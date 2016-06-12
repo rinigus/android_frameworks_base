@@ -177,7 +177,7 @@ public final class CameraManager {
                         "Camera service is currently unavailable");
             }
             try {
-                if (!supportsCamera2ApiLocked(cameraId)) {
+                //if (!supportsCamera2ApiLocked(cameraId)) {
                     // Legacy backwards compatibility path; build static info from the camera
                     // parameters
                     String[] outParameters = new String[1];
@@ -189,14 +189,14 @@ public final class CameraManager {
                     cameraService.getCameraInfo(id, /*out*/info);
 
                     characteristics = LegacyMetadataMapper.createCharacteristics(parameters, info);
-                } else {
+                /*} else {
                     // Normal path: Get the camera characteristics directly from the camera service
                     CameraMetadataNative info = new CameraMetadataNative();
 
                     cameraService.getCameraCharacteristics(id, info);
 
                     characteristics = new CameraCharacteristics(info);
-                }
+                }*/
             } catch (CameraRuntimeException e) {
                 throw e.asChecked();
             } catch (RemoteException e) {
