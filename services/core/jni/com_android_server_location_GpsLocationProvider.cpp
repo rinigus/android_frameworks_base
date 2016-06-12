@@ -476,7 +476,7 @@ static void android_location_GpsLocationProvider_class_init_native(JNIEnv* env, 
             "reportNavigationMessage",
             "(Landroid/location/GpsNavigationMessageEvent;)V");
 
-    err = hw_get_module(GPS_HARDWARE_MODULE_ID, (hw_module_t const**)&module);
+    err = -1; //hw_get_module(GPS_HARDWARE_MODULE_ID, (hw_module_t const**)&module);
     if (err == 0) {
         hw_device_t* device;
         err = module->methods->open(module, GPS_HARDWARE_MODULE_ID, &device);
