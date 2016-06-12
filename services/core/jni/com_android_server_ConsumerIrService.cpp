@@ -32,11 +32,11 @@ namespace android {
 static jlong halOpen(JNIEnv *env, jobject obj) {
     hw_module_t const* module;
     consumerir_device_t *dev;
-    int err;
+    int err = -1;
 
-    err = hw_get_module(CONSUMERIR_HARDWARE_MODULE_ID, &module);
+    //err = hw_get_module(CONSUMERIR_HARDWARE_MODULE_ID, &module);
     if (err != 0) {
-        ALOGE("Can't open consumer IR HW Module, error: %d", err);
+        ALOGE("Can't open consumer IR HW Module, error: sfdroid disabled");
         return 0;
     }
 
