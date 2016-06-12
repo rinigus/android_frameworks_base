@@ -351,6 +351,8 @@ final class ColorFade {
      * @return True if successful.
      */
     public boolean draw(float level) {
+        return true;
+/*
         if (DEBUG) {
             Slog.d(TAG, "drawFrame: level=" + level);
         }
@@ -389,6 +391,7 @@ final class ColorFade {
             detachEglContext();
         }
         return showSurface(1.0f);
+*/
     }
 
     private void drawFaded(float opacity, float gamma, float saturation, float scale) {
