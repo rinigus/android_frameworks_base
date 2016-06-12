@@ -412,6 +412,8 @@ public final class NfcAdapter {
      * context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC)
      */
     private static boolean hasNfcFeature() {
+        return false;
+/*
         IPackageManager pm = ActivityThread.getPackageManager();
         if (pm == null) {
             Log.e(TAG, "Cannot get package manager, assuming no NFC feature");
@@ -423,6 +425,7 @@ public final class NfcAdapter {
             Log.e(TAG, "Package manager query failed, assuming no NFC feature", e);
             return false;
         }
+*/
     }
 
     /**
