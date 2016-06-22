@@ -1173,11 +1173,21 @@ public class WifiManager {
         }
     }
 
+    public void update_wifiinfo()
+    {
+        try {
+            mService.update_wifiinfo();
+        }
+        catch(RemoteException e) {
+        }
+    }
+
     /**
      * Return dynamic information about the current Wi-Fi connection, if any is active.
      * @return the Wi-Fi information, contained in {@link WifiInfo}.
      */
     public WifiInfo getConnectionInfo() {
+        update_wifiinfo();
         try {
             return mService.getConnectionInfo();
         } catch (RemoteException e) {
@@ -1321,6 +1331,7 @@ public class WifiManager {
      * @return the DHCP information
      */
     public DhcpInfo getDhcpInfo() {
+        update_wifiinfo();
         try {
             return mService.getDhcpInfo();
         } catch (RemoteException e) {
@@ -1353,11 +1364,14 @@ public class WifiManager {
      * @see #isWifiEnabled()
      */
     public int getWifiState() {
+        return WifiManager.WIFI_STATE_ENABLED;
+/*
         try {
             return mService.getWifiEnabledState();
         } catch (RemoteException e) {
             return WIFI_STATE_UNKNOWN;
         }
+*/
     }
 
     /**

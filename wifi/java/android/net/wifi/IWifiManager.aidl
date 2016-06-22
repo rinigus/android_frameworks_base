@@ -162,5 +162,7 @@ interface IWifiManager
     
     void disableEphemeralNetwork(String SSID);
 
+    void update_wifiinfo();
+
 }
 
