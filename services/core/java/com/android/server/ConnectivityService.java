@@ -147,6 +147,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import android.net.wifi.WifiManager;
+
 /**
  * @hide
  */
@@ -783,6 +785,12 @@ public class ConnectivityService extends IConnectivityManager.Stub
         mUserManager = (UserManager) context.getSystemService(Context.USER_SERVICE);
     }
 
+    void update_wifiinfo()
+    {
+        WifiManager wifi = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+        wifi.update_wifiinfo();
+    }
+
     private synchronized int nextNetworkRequestId() {
         return mNextNetworkRequestId++;
     }
@@ -873,6 +881,8 @@ public class ConnectivityService extends IConnectivityManager.Stub
         Network network = null;
         String subscriberId = null;
 
+        update_wifiinfo();
+
         NetworkAgentInfo nai = mNetworkForRequestId.get(mDefaultRequest.requestId);
 
         final Network[] networks = getVpnUnderlyingNetworks(uid);
@@ -929,6 +939,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
      * {@link #isNetworkWithLinkPropertiesBlocked}.
      */
     private NetworkInfo getFilteredNetworkInfo(NetworkInfo info, LinkProperties lp, int uid) {
+        update_wifiinfo();
         if (info != null && isNetworkWithLinkPropertiesBlocked(lp, uid)) {
             // network is blocked; clone and override state
             info = new NetworkInfo(info);
@@ -1000,6 +1011,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
 
     public NetworkInfo getActiveNetworkInfoUnfiltered() {
         enforceAccessPermission();
+        update_wifiinfo();
         final int uid = Binder.getCallingUid();
         NetworkState state = getUnfilteredActiveNetworkState(uid);
         return state.networkInfo;
@@ -1172,6 +1184,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
     @Override
     public LinkProperties getLinkPropertiesForType(int networkType) {
         enforceAccessPermission();
+        update_wifiinfo();
         NetworkAgentInfo nai = mLegacyTypeTracker.getNetworkForType(networkType);
         if (nai != null) {
             synchronized (nai) {
@@ -1185,6 +1198,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
     @Override
     public LinkProperties getLinkProperties(Network network) {
         enforceAccessPermission();
+        update_wifiinfo();
         NetworkAgentInfo nai = getNetworkAgentInfoForNetwork(network);
         if (nai != null) {
             synchronized (nai) {
