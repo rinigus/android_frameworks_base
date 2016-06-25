@@ -577,11 +577,11 @@ class ContextImpl extends Context {
                     return new UiModeManager();
                 }});
 
-        registerService(USB_SERVICE, new ServiceFetcher() {
+/*        registerService(USB_SERVICE, new ServiceFetcher() {
                 public Object createService(ContextImpl ctx) {
                     IBinder b = ServiceManager.getService(USB_SERVICE);
                     return new UsbManager(ctx, IUsbManager.Stub.asInterface(b));
-                }});
+                }});*/
 
         registerService(SERIAL_SERVICE, new ServiceFetcher() {
                 public Object createService(ContextImpl ctx) {

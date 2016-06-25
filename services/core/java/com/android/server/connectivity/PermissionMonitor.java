@@ -31,7 +31,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.UserInfo;
 import android.net.Uri;
-import android.os.INetworkManagementService;
+//import android.os.INetworkManagementService;
 import android.os.RemoteException;
 import android.os.UserHandle;
 import android.os.UserManager;
@@ -61,7 +61,7 @@ public class PermissionMonitor {
     private final Context mContext;
     private final PackageManager mPackageManager;
     private final UserManager mUserManager;
-    private final INetworkManagementService mNetd;
+//    private final INetworkManagementService mNetd;
     private final BroadcastReceiver mIntentReceiver;
 
     // Values are User IDs.
@@ -70,11 +70,11 @@ public class PermissionMonitor {
     // Keys are App IDs. Values are true for SYSTEM permission and false for NETWORK permission.
     private final Map<Integer, Boolean> mApps = new HashMap<Integer, Boolean>();
 
-    public PermissionMonitor(Context context, INetworkManagementService netd) {
+    public PermissionMonitor(Context context/*, INetworkManagementService netd*/) {
         mContext = context;
         mPackageManager = context.getPackageManager();
         mUserManager = UserManager.get(context);
-        mNetd = netd;
+//        mNetd = netd;
         mIntentReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -189,6 +189,7 @@ public class PermissionMonitor {
                 list.add(UserHandle.getUid(user, app.getKey()));
             }
         }
+/*
         try {
             if (add) {
                 mNetd.setPermission("NETWORK", toIntArray(network));
@@ -200,6 +201,7 @@ public class PermissionMonitor {
         } catch (RemoteException e) {
             loge("Exception when updating permissions: " + e);
         }
+*/
     }
 
     private synchronized void onUserAdded(int user) {

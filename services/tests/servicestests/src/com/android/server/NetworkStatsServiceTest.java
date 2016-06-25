@@ -135,7 +135,7 @@ public class NetworkStatsServiceTest extends AndroidTestCase {
         mConnManager = createMock(IConnectivityManager.class);
 
         mService = new NetworkStatsService(
-                mServiceContext, mNetManager, mAlarmManager, mTime, mStatsDir, mSettings);
+                mServiceContext, /*mNetManager,*/ mAlarmManager, mTime, mStatsDir, mSettings);
         mService.bindConnectivityManager(mConnManager);
 
         mElapsedRealtime = 0L;

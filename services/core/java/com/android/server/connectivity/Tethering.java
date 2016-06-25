@@ -41,7 +41,7 @@ import android.net.RouteInfo;
 import android.net.wifi.WifiDevice;
 import android.os.Binder;
 import android.os.IBinder;
-import android.os.INetworkManagementService;
+//import android.os.INetworkManagementService;
 import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
@@ -146,7 +146,7 @@ public class Tethering extends BaseNetworkObserver {
     // upstream type list and the DUN_REQUIRED secure-setting
     private int mPreferredUpstreamMobileApn = ConnectivityManager.TYPE_NONE;
 
-    private final INetworkManagementService mNMService;
+//    private final INetworkManagementService mNMService;
     private final INetworkStatsService mStatsService;
     private Looper mLooper;
 
@@ -194,10 +194,10 @@ public class Tethering extends BaseNetworkObserver {
     private static final int DNSMASQ_POLLING_INTERVAL = 1000;
     private static final int DNSMASQ_POLLING_MAX_TIMES = 10;
 
-    public Tethering(Context context, INetworkManagementService nmService,
+    public Tethering(Context context, /*INetworkManagementService nmService,*/
             INetworkStatsService statsService, Looper looper) {
         mContext = context;
-        mNMService = nmService;
+//        mNMService = nmService;
         mStatsService = statsService;
         mLooper = looper;
 
@@ -804,12 +804,14 @@ public class Tethering extends BaseNetworkObserver {
         if (VDBG) Log.d(TAG, "tetherUsb " + enable);
 
         String[] ifaces = new String[0];
+/*
         try {
             ifaces = mNMService.listInterfaces();
         } catch (Exception e) {
             Log.e(TAG, "Error listing Interfaces", e);
             return;
         }
+*/
         for (String iface : ifaces) {
             if (isUsb(iface)) {
                 int result = (enable ? tether(iface) : untether(iface));
@@ -824,7 +826,7 @@ public class Tethering extends BaseNetworkObserver {
     // configured when we start tethering and unconfig'd on error or conclusion
     private boolean configureUsbIface(boolean enabled) {
         if (VDBG) Log.d(TAG, "configureUsbIface(" + enabled + ")");
-
+/*
         // toggle the USB interfaces
         String[] ifaces = new String[0];
         try {
@@ -855,8 +857,9 @@ public class Tethering extends BaseNetworkObserver {
                 }
             }
          }
-
         return true;
+*/
+        return false;
     }
 
     // TODO - return copies so people can't tamper
@@ -1235,6 +1238,7 @@ public class Tethering extends BaseNetworkObserver {
         class TetheredState extends State {
             @Override
             public void enter() {
+/*
                 try {
                     mNMService.tetherInterface(mIfaceName);
                 } catch (Exception e) {
@@ -1248,6 +1252,7 @@ public class Tethering extends BaseNetworkObserver {
                 setAvailable(false);
                 setTethered(true);
                 sendTetherStateChangedBroadcast();
+*/
             }
 
             private void cleanupUpstream() {
@@ -1262,6 +1267,7 @@ public class Tethering extends BaseNetworkObserver {
                     } catch (Exception e) {
                         if (VDBG) Log.e(TAG, "Exception in forceUpdate: " + e.toString());
                     }
+/*
                     try {
                         if(VDBG) Log.d(TAG, "Disabling NAT - Tethered Iface = " + mIfaceName +
                                             " mMyUpstreamIfaceName= " + mMyUpstreamIfaceName);
@@ -1273,6 +1279,7 @@ public class Tethering extends BaseNetworkObserver {
                     } catch (Exception e) {
                         if (VDBG) Log.e(TAG, "Exception in disableNat: " + e.toString());
                     }
+*/
                     mMyUpstreamIfaceName = null;
                 }
                 return;
@@ -1287,6 +1294,7 @@ public class Tethering extends BaseNetworkObserver {
                     case CMD_TETHER_UNREQUESTED:
                     case CMD_INTERFACE_DOWN:
                         cleanupUpstream();
+/*
                         try {
                             mNMService.untetherInterface(mIfaceName);
                         } catch (Exception e) {
@@ -1307,6 +1315,7 @@ public class Tethering extends BaseNetworkObserver {
                         } else if (message.what == CMD_INTERFACE_DOWN) {
                             transitionTo(mUnavailableState);
                         }
+*/
                         if (DBG) Log.d(TAG, "Untethered " + mIfaceName);
                         break;
                     case CMD_TETHER_CONNECTION_CHANGED:
@@ -1322,6 +1331,7 @@ public class Tethering extends BaseNetworkObserver {
                         }
                         cleanupUpstream();
                         if (newUpstreamIfaceName != null) {
+/*
                             try {
                                 if(VDBG) Log.d(TAG,"Enabling NAT - Tethered Iface = " + mIfaceName +
                                                    " newUpstreamIfaceName =" +newUpstreamIfaceName);
@@ -1341,6 +1351,7 @@ public class Tethering extends BaseNetworkObserver {
                                 transitionTo(mInitialState);
                                 return true;
                             }
+*/
                         }
                         mMyUpstreamIfaceName = newUpstreamIfaceName;
                         break;
@@ -1354,6 +1365,7 @@ public class Tethering extends BaseNetworkObserver {
                         // fall through
                     case CMD_TETHER_MODE_DEAD:
                         cleanupUpstream();
+/*
                         try {
                             mNMService.untetherInterface(mIfaceName);
                         } catch (Exception e) {
@@ -1373,6 +1385,7 @@ public class Tethering extends BaseNetworkObserver {
                                 setLastError(ConnectivityManager.TETHER_ERROR_IFACE_CFG_ERROR);
                             }
                         }
+*/
                         transitionTo(mInitialState);
                         break;
                     default:
@@ -1531,6 +1544,7 @@ public class Tethering extends BaseNetworkObserver {
                 return true;
             }
             protected boolean turnOnMasterTetherSettings() {
+/*
                 try {
                     mNMService.setIpForwardingEnabled(true);
                 } catch (Exception e) {
@@ -1549,8 +1563,11 @@ public class Tethering extends BaseNetworkObserver {
                     }
                 }
                 return true;
+*/
+                return false;
             }
             protected boolean turnOffMasterTetherSettings() {
+/*
                 try {
                     mNMService.stopTethering();
                 } catch (Exception e) {
@@ -1565,9 +1582,12 @@ public class Tethering extends BaseNetworkObserver {
                 }
                 transitionTo(mInitialState);
                 return true;
+*/
+                return false;
             }
 
             protected void addUpstreamV6Interface(String iface) {
+/*
                 IBinder b = ServiceManager.getService(Context.NETWORKMANAGEMENT_SERVICE);
                 INetworkManagementService service = INetworkManagementService.Stub.asInterface(b);
 
@@ -1581,11 +1601,12 @@ public class Tethering extends BaseNetworkObserver {
                 } catch (RemoteException e) {
                     Log.e(TAG, "Unable to append v6 upstream interface");
                 }
+*/
             }
 
             protected void removeUpstreamV6Interface(String iface) {
                 IBinder b = ServiceManager.getService(Context.NETWORKMANAGEMENT_SERVICE);
-                INetworkManagementService service = INetworkManagementService.Stub.asInterface(b);
+/*                INetworkManagementService service = INetworkManagementService.Stub.asInterface(b);
 
                 Log.d(TAG, "removing v6 interface " + iface);
                 try {
@@ -1597,6 +1618,7 @@ public class Tethering extends BaseNetworkObserver {
                 } catch (RemoteException e) {
                     Log.e(TAG, "Unable to remove v6 upstream interface");
                 }
+*/
             }
 
             private boolean isIpv6Connected(LinkProperties lp) {
@@ -1864,7 +1886,7 @@ public class Tethering extends BaseNetworkObserver {
                                 Log.d(TAG, "Setting DNS forwarders: Network=" + network +
                                        ", dnsServers=" + Arrays.toString(dnsServers));
                             }
-                            mNMService.setDnsForwarders(network, dnsServers);
+                            //mNMService.setDnsForwarders(network, dnsServers);
                         } catch (Exception e) {
                             Log.e(TAG, "Setting DNS forwarders failed!");
                             transitionTo(mSetDnsForwardersErrorState);
@@ -2146,9 +2168,11 @@ public class Tethering extends BaseNetworkObserver {
             public void enter() {
                 Log.e(TAG, "Error in startTethering");
                 notify(TetherInterfaceSM.CMD_START_TETHERING_ERROR);
+/*
                 try {
                     mNMService.setIpForwardingEnabled(false);
                 } catch (Exception e) {}
+*/
             }
         }
 
@@ -2157,9 +2181,11 @@ public class Tethering extends BaseNetworkObserver {
             public void enter() {
                 Log.e(TAG, "Error in stopTethering");
                 notify(TetherInterfaceSM.CMD_STOP_TETHERING_ERROR);
+/*
                 try {
                     mNMService.setIpForwardingEnabled(false);
                 } catch (Exception e) {}
+*/
             }
         }
 
@@ -2168,12 +2194,14 @@ public class Tethering extends BaseNetworkObserver {
             public void enter() {
                 Log.e(TAG, "Error in setDnsForwarders");
                 notify(TetherInterfaceSM.CMD_SET_DNS_FORWARDERS_ERROR);
+/*
                 try {
                     mNMService.stopTethering();
                 } catch (Exception e) {}
                 try {
                     mNMService.setIpForwardingEnabled(false);
                 } catch (Exception e) {}
+*/
             }
         }
     }

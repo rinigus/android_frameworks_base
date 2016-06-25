@@ -31,7 +31,7 @@ import android.net.LinkAddress;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.DetailedState;
 import android.net.NetworkInfo.State;
-import android.os.INetworkManagementService;
+//import android.os.INetworkManagementService;
 import android.os.RemoteException;
 import android.security.Credentials;
 import android.security.KeyStore;
@@ -68,7 +68,7 @@ public class LockdownVpnTracker {
     private static final int ROOT_UID = 0;
 
     private final Context mContext;
-    private final INetworkManagementService mNetService;
+//    private final INetworkManagementService mNetService;
     private final ConnectivityService mConnService;
     private final Vpn mVpn;
     private final VpnProfile mProfile;
@@ -88,10 +88,10 @@ public class LockdownVpnTracker {
         return KeyStore.getInstance().contains(Credentials.LOCKDOWN_VPN);
     }
 
-    public LockdownVpnTracker(Context context, INetworkManagementService netService,
+    public LockdownVpnTracker(Context context, /*INetworkManagementService netService,*/
             ConnectivityService connService, Vpn vpn, VpnProfile profile) {
         mContext = Preconditions.checkNotNull(context);
-        mNetService = Preconditions.checkNotNull(netService);
+//        mNetService = Preconditions.checkNotNull(netService);
         mConnService = Preconditions.checkNotNull(connService);
         mVpn = Preconditions.checkNotNull(vpn);
         mProfile = Preconditions.checkNotNull(profile);
@@ -190,6 +190,7 @@ public class LockdownVpnTracker {
             EventLogTags.writeLockdownVpnConnected(egressType);
             showNotification(R.string.vpn_lockdown_connected, R.drawable.vpn_connected);
 
+/*
             try {
                 clearSourceRulesLocked();
 
@@ -207,7 +208,7 @@ public class LockdownVpnTracker {
             } catch (RemoteException e) {
                 throw new RuntimeException("Problem setting firewall rules", e);
             }
-
+*/
             mConnService.sendConnectedBroadcast(augmentNetworkInfo(egressInfo));
         }
     }
@@ -226,6 +227,7 @@ public class LockdownVpnTracker {
         final IntentFilter resetFilter = new IntentFilter(ACTION_LOCKDOWN_RESET);
         mContext.registerReceiver(mResetReceiver, resetFilter, CONNECTIVITY_INTERNAL, null);
 
+/*
         try {
             // TODO: support non-standard port numbers
             mNetService.setFirewallEgressDestRule(mProfile.server, 500, true);
@@ -234,6 +236,7 @@ public class LockdownVpnTracker {
         } catch (RemoteException e) {
             throw new RuntimeException("Problem setting firewall rules", e);
         }
+*/
 
         synchronized (mStateLock) {
             handleStateChangedLocked();
@@ -253,6 +256,7 @@ public class LockdownVpnTracker {
         mErrorCount = 0;
 
         mVpn.stopLegacyVpnPrivileged();
+/*
         try {
             mNetService.setFirewallEgressDestRule(mProfile.server, 500, false);
             mNetService.setFirewallEgressDestRule(mProfile.server, 4500, false);
@@ -260,6 +264,7 @@ public class LockdownVpnTracker {
         } catch (RemoteException e) {
             throw new RuntimeException("Problem setting firewall rules", e);
         }
+*/
         clearSourceRulesLocked();
         hideNotification();
 
@@ -278,6 +283,7 @@ public class LockdownVpnTracker {
     }
 
     private void clearSourceRulesLocked() {
+/*
         try {
             if (mAcceptedIface != null) {
                 mNetService.setFirewallInterfaceRule(mAcceptedIface, false);
@@ -296,6 +302,7 @@ public class LockdownVpnTracker {
         } catch (RemoteException e) {
             throw new RuntimeException("Problem setting firewall rules", e);
         }
+*/
     }
 
     private void setFirewallEgressSourceRule(
@@ -303,7 +310,7 @@ public class LockdownVpnTracker {
         // Our source address based firewall rules must only cover our own source address, not the
         // whole subnet
         final String addrString = address.getAddress().getHostAddress();
-        mNetService.setFirewallEgressSourceRule(addrString, allow);
+//        mNetService.setFirewallEgressSourceRule(addrString, allow);
     }
 
     public void onNetworkInfoChanged() {

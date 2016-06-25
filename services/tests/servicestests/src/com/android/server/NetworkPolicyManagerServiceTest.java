@@ -194,7 +194,7 @@ public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
         mNotifManager = createMock(INotificationManager.class);
 
         mService = new NetworkPolicyManagerService(mServiceContext, mActivityManager, mPowerManager,
-                mStatsService, mNetworkManager, mTime, mPolicyDir, true);
+                mStatsService, /*mNetworkManager,*/ mTime, mPolicyDir, true);
         mService.bindConnectivityManager(mConnManager);
         mService.bindNotificationManager(mNotifManager);
 
