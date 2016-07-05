@@ -4028,6 +4028,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
     private void updateCapabilities(NetworkAgentInfo networkAgent,
             NetworkCapabilities networkCapabilities) {
         if (!Objects.equals(networkAgent.networkCapabilities, networkCapabilities)) {
+/*
             if (networkAgent.networkCapabilities.hasCapability(NET_CAPABILITY_NOT_RESTRICTED) !=
                     networkCapabilities.hasCapability(NET_CAPABILITY_NOT_RESTRICTED)) {
                 try {
@@ -4038,6 +4039,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
                     loge("Exception in setNetworkPermission: " + e);
                 }
             }
+*/
             synchronized (networkAgent) {
                 networkAgent.networkCapabilities = networkCapabilities;
             }
