@@ -254,7 +254,7 @@ public class KeyButtonView extends ImageView {
     }
 
     private boolean supportsLongPress() {
-        return mSupportsLongpress && getTag() != NavbarEditor.NAVBAR_HOME;
+        return mSupportsLongpress;// && getTag() != NavbarEditor.NAVBAR_HOME;
     }
 
     public boolean onTouchEvent(MotionEvent ev) {

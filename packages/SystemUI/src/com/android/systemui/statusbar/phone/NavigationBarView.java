@@ -138,11 +138,13 @@ public class NavigationBarView extends LinearLayout {
                 View view, int transitionType) {
             if (NavbarEditor.NAVBAR_BACK.equals(view.getTag())) {
                 mBackTransitioning = true;
+/*
             } else if (NavbarEditor.NAVBAR_HOME.equals(view.getTag()) && transitionType == LayoutTransition.APPEARING) {
                 mHomeAppearing = true;
                 mStartDelay = transition.getStartDelay(transitionType);
                 mDuration = transition.getDuration(transitionType);
                 mInterpolator = transition.getInterpolator(transitionType);
+*/
             }
         }
 
@@ -151,8 +153,10 @@ public class NavigationBarView extends LinearLayout {
                 View view, int transitionType) {
             if (NavbarEditor.NAVBAR_BACK.equals(view.getTag())) {
                 mBackTransitioning = false;
+/*
             } else if (NavbarEditor.NAVBAR_HOME.equals(view.getTag()) && transitionType == LayoutTransition.APPEARING) {
                 mHomeAppearing = false;
+*/
             }
         }
 
@@ -160,7 +164,7 @@ public class NavigationBarView extends LinearLayout {
             // When dismissing ime during unlock, force the back button to run the same appearance
             // animation as home (if we catch this condition early enough).
             if (!mBackTransitioning && getBackButton().getVisibility() == VISIBLE
-                    && mHomeAppearing && getHomeButton().getAlpha() == 0) {
+                    && mHomeAppearing/* && getHomeButton().getAlpha() == 0*/) {
                 getBackButton().setAlpha(0);
                 ValueAnimator a = ObjectAnimator.ofFloat(getBackButton(), "alpha", 0, 1);
                 a.setStartDelay(mStartDelay);
@@ -312,9 +316,11 @@ public class NavigationBarView extends LinearLayout {
         return mCurrentView;
     }
 
+/*
     public View getRecentsButton() {
         return mCurrentView.findViewWithTag(NavbarEditor.NAVBAR_RECENT);
     }
+*/
 
     public View getMenuButton() {
         return mCurrentView.findViewWithTag(NavbarEditor.NAVBAR_CONDITIONAL_MENU);
@@ -324,9 +330,11 @@ public class NavigationBarView extends LinearLayout {
         return mCurrentView.findViewWithTag(NavbarEditor.NAVBAR_BACK);
     }
 
+/*
     public View getHomeButton() {
         return mCurrentView.findViewWithTag(NavbarEditor.NAVBAR_HOME);
     }
+*/
 
     public View getImeSwitchButton() {
         return mCurrentView.findViewById(R.id.ime_switcher);
@@ -407,8 +415,8 @@ public class NavigationBarView extends LinearLayout {
         mBackLandIcon.setImeVisible(backAlt);
         mBackIcon.setImeVisible(backAlt);
 
-        ((ImageView)getRecentsButton()).setImageDrawable(mVertical ? mRecentLandIcon : mRecentIcon);
-        ((ImageView)getHomeButton()).setImageDrawable(mVertical ? mHomeLandIcon : mHomeIcon);
+        //((ImageView)getRecentsButton()).setImageDrawable(mVertical ? mRecentLandIcon : mRecentIcon);
+        //((ImageView)getHomeButton()).setImageDrawable(mVertical ? mHomeLandIcon : mHomeIcon);
 
         final boolean showImeButton = ((hints & StatusBarManager.NAVIGATION_HINT_IME_SHOWN) != 0)
                 && !mShowDpadArrowKeys;
@@ -491,8 +499,8 @@ public class NavigationBarView extends LinearLayout {
         }
 
         setButtonWithTagVisibility(NavbarEditor.NAVBAR_BACK, !disableBack);
-        setButtonWithTagVisibility(NavbarEditor.NAVBAR_HOME, !disableHome);
-        setButtonWithTagVisibility(NavbarEditor.NAVBAR_RECENT, !disableRecent);
+        //setButtonWithTagVisibility(NavbarEditor.NAVBAR_HOME, !disableHome);
+        //setButtonWithTagVisibility(NavbarEditor.NAVBAR_RECENT, !disableRecent);
 
         mBarTransitions.applyBackButtonQuiescentAlpha(mBarTransitions.getMode(), true /*animate*/);
     }
@@ -610,7 +618,7 @@ public class NavigationBarView extends LinearLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        mDelegateHelper.setInitialTouchRegion(getHomeButton(), getBackButton(), getRecentsButton());
+        mDelegateHelper.setInitialTouchRegion(/*getHomeButton(), */getBackButton()/*, getRecentsButton()*/);
         ViewGroup midNavButtons = (ViewGroup) mCurrentView.findViewById(R.id.mid_nav_buttons);
         int count = midNavButtons.getChildCount();
         View buttons[] = new View[count];
@@ -757,8 +765,8 @@ public class NavigationBarView extends LinearLayout {
                         mShowMenu ? "true" : "false"));
 
         dumpButton(pw, "back", getBackButton());
-        dumpButton(pw, "home", getHomeButton());
-        dumpButton(pw, "rcnt", getRecentsButton());
+        //dumpButton(pw, "home", getHomeButton());
+        //dumpButton(pw, "rcnt", getRecentsButton());
         dumpButton(pw, "menu", getMenuButton());
 
         pw.println("    }");
@@ -807,6 +815,7 @@ public class NavigationBarView extends LinearLayout {
     }
 
     protected void updateButtonListeners() {
+/*
         View recentView = mCurrentView.findViewWithTag(NavbarEditor.NAVBAR_RECENT);
         if (recentView != null) {
             recentView.setOnClickListener(mRecentsClickListener);
@@ -814,15 +823,18 @@ public class NavigationBarView extends LinearLayout {
             recentView.setLongClickable(true);
             recentView.setOnLongClickListener(mRecentsBackListener);
         }
+*/
         View backView = mCurrentView.findViewWithTag(NavbarEditor.NAVBAR_BACK);
         if (backView != null) {
             backView.setLongClickable(true);
             backView.setOnLongClickListener(mRecentsBackListener);
         }
+/*
         View homeView = mCurrentView.findViewWithTag(NavbarEditor.NAVBAR_HOME);
         if (homeView != null) {
             homeView.setOnTouchListener(mHomeSearchActionListener);
         }
+*/
     }
 
     public boolean isInEditMode() {
