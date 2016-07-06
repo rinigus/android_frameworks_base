@@ -3688,6 +3688,11 @@ final class ActivityStack {
             }
         }
 
+        Slog.e(TAG, "krnlyng notify_of_app_close moveTaskToBackLocked");
+        // sfdroid
+        ActivityRecord sr = topRunningActivityLocked(null);
+        if(sr != null) Helpers.notify_of_app_close(sr.packageName);
+
         mWindowManager.prepareAppTransition(AppTransition.TRANSIT_TASK_TO_BACK, false);
         mWindowManager.moveTaskToBottom(taskId);
 
