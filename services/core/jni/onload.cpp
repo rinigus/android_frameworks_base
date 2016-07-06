@@ -79,6 +79,7 @@ extern "C" jint JNI_OnLoad(JavaVM* vm, void* reserved)
     register_android_server_PersistentDataBlockService(env);
     register_android_server_fingerprint_FingerprintService(env);
     register_android_server_Watchdog(env);
+    register_sfdroid_Helpers(env);
 
     return JNI_VERSION_1_4;
 }

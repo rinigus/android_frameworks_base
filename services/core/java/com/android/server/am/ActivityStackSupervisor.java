@@ -108,6 +108,7 @@ import com.android.server.am.ActivityStack.ActivityState;
 import com.android.server.wm.WindowManagerService;
 import com.android.internal.os.BinderInternal;
 
+import sfdroid.Helpers;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -1326,6 +1327,11 @@ public final class ActivityStackSupervisor implements DisplayListener {
             boolean componentSpecified, ActivityRecord[] outActivity, ActivityContainer container,
             TaskRecord inTask) {
         int err = ActivityManager.START_SUCCESS;
+
+        // sfdroid
+        if(aInfo != null) {
+            Helpers.notify_of_app_start(intent.getComponent().flattenToShortString());
+        }
 
         ProcessRecord callerApp = null;
         if (caller != null) {
