@@ -103,8 +103,8 @@ void android_server_PowerManagerService_userActivity(nsecs_t eventTime, int32_t 
 static void nativeInit(JNIEnv* env, jobject obj) {
     gPowerManagerServiceObj = env->NewGlobalRef(obj);
 
-    status_t err = hw_get_module(POWER_HARDWARE_MODULE_ID,
-            (hw_module_t const**)&gPowerModule);
+    status_t err = -1 //hw_get_module(POWER_HARDWARE_MODULE_ID,
+            //(hw_module_t const**)&gPowerModule);
     if (!err) {
         gPowerModule->init(gPowerModule);
     } else {
@@ -135,6 +135,7 @@ static void nativeSetInteractive(JNIEnv *env, jclass clazz, jboolean enable) {
 }
 
 static void nativeSetAutoSuspend(JNIEnv *env, jclass clazz, jboolean enable) {
+/*
     if (enable) {
         ALOGD_IF_SLOW(100, "Excessive delay in autosuspend_enable() while turning screen off");
         autosuspend_enable();
@@ -142,6 +143,7 @@ static void nativeSetAutoSuspend(JNIEnv *env, jclass clazz, jboolean enable) {
         ALOGD_IF_SLOW(100, "Excessive delay in autosuspend_disable() while turning screen on");
         autosuspend_disable();
     }
+*/
 }
 
 static void nativeSendPowerHint(JNIEnv *env, jclass clazz, jint hintId, jint data) {
