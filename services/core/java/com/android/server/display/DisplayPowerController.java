@@ -598,7 +598,7 @@ final class DisplayPowerController implements AutomaticBrightnessController.Call
         // Animate the screen state change unless already animating.
         // The transition may be deferred, so after this point we will use the
         // actual state instead of the desired one.
-        animateScreenStateChange(state, performScreenOffTransition);
+        //animateScreenStateChange(state, performScreenOffTransition);
         state = mPowerState.getScreenState();
 
         // Use zero brightness when screen is off.
