@@ -103,8 +103,8 @@ void android_server_PowerManagerService_userActivity(nsecs_t eventTime, int32_t 
 static void nativeInit(JNIEnv* env, jobject obj) {
     gPowerManagerServiceObj = env->NewGlobalRef(obj);
 
-    status_t err = hw_get_module(POWER_HARDWARE_MODULE_ID,
-            (hw_module_t const**)&gPowerModule);
+    status_t err = -1; /*hw_get_module(POWER_HARDWARE_MODULE_ID,
+            (hw_module_t const**)&gPowerModule);*/
     if (!err) {
         gPowerModule->init(gPowerModule);
     } else {
