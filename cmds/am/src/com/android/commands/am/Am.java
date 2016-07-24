@@ -301,7 +301,9 @@ public class Am extends BaseCommand {
 
         String op = nextArgRequired();
 
-        if (op.equals("start")) {
+        if (op.equals("previous")) {
+            runPrevious();
+        } else if (op.equals("start")) {
             runStart();
         } else if (op.equals("startservice")) {
             runStartService();
@@ -688,6 +690,29 @@ public class Am extends BaseCommand {
         } else if (result == -1) {
             System.err.println("Error stopping service");
         }
+    }
+
+    void runPrevious() throws Exception {
+        Intent intent = makeIntent(UserHandle.USER_CURRENT);
+
+        if (mUserId == UserHandle.USER_ALL) {
+            System.err.println("Error: Can't start service with user 'all'");
+            return;
+        }
+
+        List<ActivityManager.RunningTaskInfo> rtil = mAm.getTasks(999999, 0); // ALL?
+
+        for (ActivityManager.RunningTaskInfo rti : rtil)
+        {
+            if(rti.topActivity.getPackageName().equals(intent.getPackage()))
+            {
+                System.out.println("moving task to front: " + rti.topActivity.toString());
+                mAm.moveTaskToFront(rti.id, ActivityManager.MOVE_TASK_WITH_HOME, null);
+                break;
+            }
+        }
+
+        System.out.println("am previous done");
     }
 
     private void runStart() throws Exception {
