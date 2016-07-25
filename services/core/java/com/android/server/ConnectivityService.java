@@ -4030,13 +4030,13 @@ public class ConnectivityService extends IConnectivityManager.Stub
         if (!Objects.equals(networkAgent.networkCapabilities, networkCapabilities)) {
             if (networkAgent.networkCapabilities.hasCapability(NET_CAPABILITY_NOT_RESTRICTED) !=
                     networkCapabilities.hasCapability(NET_CAPABILITY_NOT_RESTRICTED)) {
-                try {
+/*                try {
                     mNetd.setNetworkPermission(networkAgent.network.netId,
                             networkCapabilities.hasCapability(NET_CAPABILITY_NOT_RESTRICTED) ?
                                     null : NetworkManagementService.PERMISSION_SYSTEM);
                 } catch (RemoteException e) {
                     loge("Exception in setNetworkPermission: " + e);
-                }
+                }*/
             }
             synchronized (networkAgent) {
                 networkAgent.networkCapabilities = networkCapabilities;
