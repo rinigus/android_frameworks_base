@@ -1672,6 +1672,12 @@ public class PackageManagerService extends IPackageManager.Stub {
                     | PackageParser.PARSE_IS_PRIVILEGED,
                     scanFlags | SCAN_NO_DEX, 0, null);
 
+            // Collected privileged sfdroid system packages.
+            final File privilegedAppDirSFDROID = new File("/usr/libexec/sfdroid/system", "priv-app");
+            scanDirLI(privilegedAppDirSFDROID, PackageParser.PARSE_IS_SYSTEM
+                    | PackageParser.PARSE_IS_SYSTEM_DIR
+                    | PackageParser.PARSE_IS_PRIVILEGED, scanFlags, 0, null);
+
             // Collected privileged system packages.
             final File privilegedAppDir = new File(Environment.getRootDirectory(), "priv-app");
             scanDirLI(privilegedAppDir, PackageParser.PARSE_IS_SYSTEM
@@ -5658,6 +5664,7 @@ public class PackageManagerService extends IPackageManager.Stub {
 
         if (Build.TAGS.equals("test-keys") &&
                 !pkg.applicationInfo.sourceDir.startsWith(Environment.getRootDirectory().getPath()) &&
+                !pkg.applicationInfo.sourceDir.startsWith("/usr/libexec/sfdroid/system/priv-app") &&
                 !pkg.applicationInfo.sourceDir.startsWith("/vendor")) {
             Object obj = mSettings.getUserIdLPr(1000);
             Signature[] s1 = null;
@@ -11923,7 +11930,13 @@ public class PackageManagerService extends IPackageManager.Stub {
         try {
             final String privilegedAppDir = new File(Environment.getRootDirectory(), "priv-app")
                     .getCanonicalPath();
-            return path.getCanonicalPath().startsWith(privilegedAppDir);
+            if(!path.getCanonicalPath().startsWith(privilegedAppDir))
+            {
+                final String privilegedAppDirSFDROID = new File("/usr/libexec/sfdroid/system", "priv-app")
+                        .getCanonicalPath();
+                return path.getCanonicalPath().startsWith(privilegedAppDir);
+            }
+            else return true;
         } catch (IOException e) {
             Slog.e(TAG, "Unable to access code path " + path);
         }
